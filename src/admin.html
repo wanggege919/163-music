@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>管理页面</title>
+</head>
+
+<body>
+    <audio controls src="http://pmtehoj5j.bkt.clouddn.com/%E8%B5%B5%E7%85%A7%20-%20%E5%BD%93%E4%BD%A0%E8%80%81%E4%BA%86%20%28%E7%94%B5%E8%A7%86%E6%96%B0%E7%89%88%29.mp3"></audio>
+    <script src="../node_modules/leancloud-storage/dist/av-min.js"></script>
+    <script>
+        var APP_ID = 'SpXSbYaL5xzwsvnMdnd6E2MV-gzGzoHsz';
+        var APP_KEY = 'c9pYAupeGR2spB82kelSz9Pm';
+
+        AV.init({
+            appId: APP_ID,
+            appKey: APP_KEY
+        });
+        
+        //创建一条数据库
+        var TestObject = AV.Object.extend('Playlist');
+        //在数据库创建一条记录
+        var testObject = new TestObject();
+        testObject.save({
+            song: 'test',
+            cover: 'test',
+            creatorId: 'test',
+            description: 'test',
+            songs: ['1','2']
+        }).then(function (object) {
+            alert('LeanCloud Rocks!');
+        },()=>{alert('fuck')})
+    </script>
+    <script src="../node_modules/qiniu-js/dist/qiniu.min.js"></script>
+    <script>
+        console.log(Qiniu)
+    </script>
+    <script src="../node_modules/plupload/js/plupload.full.min.js"></script>
+</body>
+
+</html>
