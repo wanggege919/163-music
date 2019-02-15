@@ -37,20 +37,21 @@ body{
 .newSong.active{
     background: #a5a2a3;
 }
-.songList{
+#songList-container{
     flex-grow: 1;
+}
+.songList{
     border-top: 1px solid #999;
 }
 .songList > li{
     border-bottom: 1px solid #ddd;
-    padding: 6px 0;
+    padding: 6px 10px;
+    
 }
 .songList > li.active{
     background: #d4d4d4;
 }
-.uploadArea{
-    
-}
+
 .draggable {
     text-align: center;
     padding: 20px;
