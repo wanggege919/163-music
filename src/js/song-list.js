@@ -58,7 +58,18 @@
             $(this.view.el).on('click','li',(e)=>{
                 this.view.activeItem(e.currentTarget)
                 let songId = e.currentTarget.getAttribute('data-song-id')
-                window.eventHup.emit('select',{id: songId})
+                let songs = this.model.data.songs
+                let data
+                for(var i = 0;i<songs.length;i++){
+                    if(songs[i].id === songId){
+                        data = songs[i]
+                        break
+                    }
+                }
+                //深复制  使这个文件的data 不要与另一个文件有关联
+                let string = JSON.stringify(data)
+                let object = JSON.parse(string)
+                window.eventHup.emit('select',object)
             }) 
         },
         bindEventsHup() {

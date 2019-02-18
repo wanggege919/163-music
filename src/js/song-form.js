@@ -83,6 +83,10 @@
             window.eventHup.on('upload', (data) => {
                 this.reset(data)
             })
+            window.eventHup.on('select',(data)=>{
+                this.model.data = data
+                this.view.render(this.model.data)
+            })
         },
         reset(data) {
             this.view.render(data)
@@ -106,6 +110,7 @@
                     window.eventHup.emit('create',object)
                 })
             })
+           
         }
     }
 
