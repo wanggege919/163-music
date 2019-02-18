@@ -20,9 +20,16 @@
             window.eventHup.on('upload',(data)=>{
                 this.active()
             })
+            window.eventHup.on('select',(data)=>{
+                console.log(data.id)
+                this.deactive()
+            })
         },
         active(){
             $(this.view.el).addClass('active')
+        },
+        deactive(){
+            $(this.view.el).removeClass('active')
         }
     }
 
