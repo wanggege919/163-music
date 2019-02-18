@@ -23,9 +23,13 @@
             window.eventHup.on('select',(data)=>{
                 this.deactive()
             })
+            $(this.view.el).on('click',()=>{
+                this.active()
+            })
         },
         active(){
             $(this.view.el).addClass('active')
+            window.eventHup.emit('new')
         },
         deactive(){
             $(this.view.el).removeClass('active')

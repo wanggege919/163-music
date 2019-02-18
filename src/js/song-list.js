@@ -80,7 +80,9 @@
                 this.model.data.songs.push(songData)
                 this.view.render(this.model.data)
             })
-            
+            window.eventHup.on('new',()=>{
+                this.view.clearActive()
+            })
         }
     }
 
