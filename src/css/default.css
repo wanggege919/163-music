@@ -102,3 +102,38 @@ body{
     margin-left: 20px;
  }
 
+ /*  loading   */
+
+ @keyframes loading{
+     0%{
+         transform:scale(1.0)
+     }
+     100%{
+         transform: scale(0.1)
+     }
+ }
+ .site-loading{
+     visibility: hidden;
+     width: 100%;
+     height: 100%;
+     position: fixed;
+     background: rgba(0,0,0,0.3);
+     top: 0;
+     left: 0;
+     z-index: 1;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+ }
+ .site-loading.active{
+     visibility: visible;
+ }
+ .site-loading::before{
+     content: '';
+     display: block;
+     width: 100px;
+     height: 100px;
+     background: green;
+     border-radius: 50%;
+     animation: loading 1s linear infinite alternate-reverse;
+ }
