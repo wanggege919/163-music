@@ -46,8 +46,7 @@
             this.view.render(this.model.data)
             this.bindEvents()
             this.bindEventsHup()
-            this.getAllSongs()
-
+            this.getAllSongs()            
         },
         getAllSongs() {
             return this.model.find().then(() => {
@@ -79,6 +78,15 @@
             })
             window.eventHup.on('new',()=>{
                 this.view.clearActive()
+            })
+            window.eventHup.on('update',(song)=>{
+                let songs = this.model.data.songs
+                for(let i = 0;i<songs.length;i++){
+                    if(songs[i].id === song.id){
+                        songs[i] = song
+                    }
+                }
+                this.view.render(this.model.data)
             })
         }
     }

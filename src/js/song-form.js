@@ -26,19 +26,19 @@
         </form>        
         `,
         render(data = {}) {//ES6 语法 如果用户没有传data或者data是undefined，则默认data是空对象
-            let placeholders = ['name','singer','url','id']
+            let placeholders = ['name', 'singer', 'url', 'id']
             let html = this.template
             placeholders.map((string) => {
                 html = html.replace(`__${string}__`, data[string] || '')
             })
             $(this.el).html(html)
-            if(data.id){
+            if (data.id) {
                 $(this.el).prepend('<h1>编辑歌曲</h1>')
-            }else{
+            } else {
                 $(this.el).prepend('<h1>新建歌曲</h1>')
             }
         },
-        reset(){
+        reset() {
             this.render({})
         }
     }
@@ -57,24 +57,36 @@
             // 设置优先级
             song.set('singer', data.singer);
             song.set('url', data.url);
-            return song.save().then((newSong)=> {
-                let {id, attributes} = newSong
+            return song.save().then((newSong) => {
+                let { id, attributes } = newSong
                 // this.data.id = id
                 // this.data.name = attributes.name
                 // this.data.singer = attributes.singer
                 // this.data.url = attributes.url
-                Object.assign(this.data,{ //把右边的对象值赋给左边对象，等同于上面
+                Object.assign(this.data, { //把右边的对象值赋给左边对象，等同于上面
                     id,
                     ...attributes //等于下面三句，就是attributes的所有内容
                     // name: attributes.name,
                     // singer: attributes.singer,
-                    // url: attributes.url
-                    
+                    // url: attributes.url   
                 })
-            }, (error)=> {
+            }, (error) => {
                 console.error(error);
             });
-        }
+        },
+        updata(data){
+            // 第一个参数是 className，第二个参数是 objectId
+            var song = AV.Object.createWithoutData('Song', this.data.id);
+            // 修改属性
+            song.set('name', data.name);
+            song.set('singer', data.singer);
+            song.set('url', data.url);
+            // 保存到云端
+            return song.save().then((response)=>{
+                Object.assign(this.data,data)
+                return response
+            });
+        },
     }
 
     let controller = {
@@ -83,17 +95,17 @@
             this.model = model
             this.view.render(this.model.data)
             this.bindEvents()
-            window.eventHup.on('select',(data)=>{
+            window.eventHup.on('select', (data) => {
                 this.model.data = data
                 this.view.render(this.model.data)
             })
-            window.eventHup.on('new',(data)=>{
-                if(this.model.data.id){
+            window.eventHup.on('new', (data) => {
+                if (this.model.data.id) {
                     this.model.data = {
                         //name: '',singer: '',url: '',id: ''
                     }
-                }else{
-                    Object.assign(this.model.data,data)
+                } else {
+                    Object.assign(this.model.data, data)
                 }
                 this.view.render(this.model.data)
             })
@@ -101,26 +113,44 @@
         reset(data) {
             this.view.render(data)
         },
-        bindEvents() {
-            $(this.view.el).on('submit', 'form', (e) => {
-                e.preventDefault()
-                //let needs = ['name','singer','url']
-                let needs = 'name singer url'.split(' ')//与上面一句效果一样
-                let data = {}
-                needs.map((string) => {
-                    data[string] = $(this.view.el).find(`[name="${string}"]`).val()
-                })
-               
-                this.model.create(data)
-                .then(()=>{
+        create() {
+            let needs = 'name singer url'.split(' ')//与上面一句效果一样
+            let data = {}
+            needs.map((string) => {
+                data[string] = $(this.view.el).find(`[name="${string}"]`).val()
+            })
+
+            this.model.create(data)
+                .then(() => {
                     this.view.reset()
                     //深拷贝
                     let string = JSON.stringify(this.model.data)
                     let object = JSON.parse(string)
-                    window.eventHup.emit('create',object)
+                    window.eventHup.emit('create', object)
                 })
+        },
+        updata() {
+            let needs = 'name singer url'.split(' ')//与上面一句效果一样
+            let data = {}
+            needs.map((string) => {
+                data[string] = $(this.view.el).find(`[name="${string}"]`).val()
             })
-           
+            this.model.updata(data).then(()=>{
+                window.eventHup.emit('update',this.model.data)
+            })
+        },
+        bindEvents() {
+            $(this.view.el).on('submit', 'form', (e) => {
+                e.preventDefault()
+                //let needs = ['name','singer','url']
+                if (this.model.data.id) {
+                    this.updata()
+                } else {
+                    this.create()
+                }
+
+            })
+
         }
     }
 
