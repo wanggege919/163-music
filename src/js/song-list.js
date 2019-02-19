@@ -73,9 +73,6 @@
             }) 
         },
         bindEventsHup() {
-            window.eventHup.on('upload', () => {
-                this.view.clearActive()
-            })
             window.eventHup.on('create', (songData) => {
                 this.model.data.songs.push(songData)
                 this.view.render(this.model.data)

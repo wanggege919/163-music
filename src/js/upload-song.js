@@ -65,7 +65,7 @@
                         var sourceLink = 'http://' + domain + '/' + encodeURIComponent(response.key); //获取上传成功后的文件的Url
                         //uploadStatus.textContent = sourceLink + ' ' + response.key
 
-                        window.eventHup.emit('upload',{
+                        window.eventHup.emit('new',{
                             url: sourceLink,
                             name: response.key
                         })

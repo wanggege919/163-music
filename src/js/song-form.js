@@ -83,16 +83,17 @@
             this.model = model
             this.view.render(this.model.data)
             this.bindEvents()
-            window.eventHup.on('upload', (data) => {
-                this.reset(data)
-            })
             window.eventHup.on('select',(data)=>{
                 this.model.data = data
                 this.view.render(this.model.data)
             })
-            window.eventHup.on('new',()=>{
-                this.model.data = {
-                   //name: '',singer: '',url: '',id: ''
+            window.eventHup.on('new',(data)=>{
+                if(this.model.data.id){
+                    this.model.data = {
+                        //name: '',singer: '',url: '',id: ''
+                    }
+                }else{
+                    Object.assign(this.model.data,data)
                 }
                 this.view.render(this.model.data)
             })
