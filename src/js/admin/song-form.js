@@ -22,11 +22,23 @@
                     <input name="url" type="text" value="__url__">
                 </label>
             </div>
+            <div class="row">
+                <label>
+                    封面
+                    <input name="cover" type="text" value="__cover__">
+                </label>
+            </div>
+            <div class="row">
+                <label>
+                    歌词
+                </label>
+                    <textarea cols=100 rows=10 name="lyrics">__lyrics__</textarea>  
+            </div>
             <button type="submit">保存</button>
         </form>        
         `,
         render(data = {}) {//ES6 语法 如果用户没有传data或者data是undefined，则默认data是空对象
-            let placeholders = ['name', 'singer', 'url', 'id']
+            let placeholders = ['name', 'singer', 'url', 'id','cover','lyrics']
             let html = this.template
             placeholders.map((string) => {
                 html = html.replace(`__${string}__`, data[string] || '')
@@ -45,7 +57,7 @@
 
     let model = {
         data: {
-            name: '', singer: '', url: '', id: ''
+            name: '', singer: '', url: '', id: '',cover: '',lyrics: ''
         },
         create(data) {
             // 声明类型
@@ -57,6 +69,8 @@
             // 设置优先级
             song.set('singer', data.singer);
             song.set('url', data.url);
+            song.set('cover', data.cover);
+            song.set('lyrics', data.lyrics);
             return song.save().then((newSong) => {
                 let { id, attributes } = newSong
                 // this.data.id = id
@@ -78,12 +92,19 @@
             // 第一个参数是 className，第二个参数是 objectId
             var song = AV.Object.createWithoutData('Song', this.data.id);
             // 修改属性
+            console.log(1)
+            console.log(this.data.id)
             song.set('name', data.name);
             song.set('singer', data.singer);
             song.set('url', data.url);
+            song.set('cover', data.cover);
+            song.set('lyrics', data.lyrics);
             // 保存到云端
-            return song.save().then((response)=>{
+            console.log(2)
+            return song.save()
+            .then((response)=>{
                 Object.assign(this.data,data)
+                console.log(3)
                 return response
             });
         },
@@ -114,7 +135,7 @@
             this.view.render(data)
         },
         create() {
-            let needs = 'name singer url'.split(' ')//与上面一句效果一样
+            let needs = 'name singer url cover lyrics'.split(' ')//与上面一句效果一样
             let data = {}
             needs.map((string) => {
                 data[string] = $(this.view.el).find(`[name="${string}"]`).val()
@@ -130,7 +151,7 @@
                 })
         },
         updata() {
-            let needs = 'name singer url'.split(' ')//与上面一句效果一样
+            let needs = 'name singer url cover lyrics'.split(' ')//与上面一句效果一样
             let data = {}
             needs.map((string) => {
                 data[string] = $(this.view.el).find(`[name="${string}"]`).val()
