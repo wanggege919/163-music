@@ -15,4 +15,4 @@
 1.  npm i -g http-server
 2.  http-server -c-1
 3.  node server 8888
-4.  open [http://127.0.0.1:8080/src/index.html](http://127.0.0.1:8080/src/admin.html)
+4.  open [http://127.0.0.1:8080/src/index.html](http://127.0.0.1:8080/src/index.html)
