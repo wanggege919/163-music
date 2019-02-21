@@ -162,7 +162,7 @@
         },
         bindEvents() {
             $(this.view.el).on('submit', 'form', (e) => {
-                e.preventDefault()
+                e.preventDefault()//不要让表单自动提交
                 //let needs = ['name','singer','url']
                 if (this.model.data.id) {
                     this.updata()

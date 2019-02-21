@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/default.css">
+    <style>
+
+
+    </style>
+    <title>歌单管理页面</title>
+</head>
+
+<body>
+
+    <div class="playlistForm-wrapper">
+        <h1>创建歌单</h1>
+        <form class="playlistForm">
+            <div class="row">
+                <label>歌单名<input type="text" name="name"></label>
+            </div>
+            <div class="row">
+                <label>简介<textarea name="summary"></textarea></label>
+            </div>
+
+            <div class="row">
+                <button type="submit">创建</button>
+            </div>
+        </form>
+
+    </div>
+
+    <script src="../node_modules/leancloud-storage/dist/av-min.js"></script>
+    <script src="./js/initializers/av.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="./js/admin/event-hup.js"></script>
+
+    <script>
+        {
+            let view = {
+                el: '.playlistForm-wrapper'
+            }
+            let model = {
+                create(data) {
+                    var Playlist = AV.Object.extend('Playlist');
+                    var playlist = new Playlist();
+                    playlist.set('name', data.name);
+                    playlist.set('summary', data.summary);
+                    playlist.save().then((newPlaylist) => {
+                        console.log(newPlaylist)
+                    },
+                        (error) => {
+                            console.error(error);
+                        });
+
+                }
+            }
+            let controller = {
+                init(view, model) {
+                    this.view = view
+                    this.model = model
+                    this.bindEvens()
+                },
+                bindEvens() {
+                    $(this.view.el).on('submit', 'form', (e) => {
+                        e.preventDefault()
+                        let form = $(this.view.el).find('form').get(0)
+                        let data = {
+                            name: form.name.value.trim(),
+                            summary: form.summary.value.trim()
+                        }
+                        this.model.create(data)
+                    })
+                }
+            }
+            controller.init(view, model)
+        }
+
+
+    </script>
+
+
+
+    <script>
+
+        // var Song = AV.Object.extend('Song');
+        //     var song = new Song();
+        //     song.set('name', '1');
+        //     song.set('singer', '2');
+        //     song.save()
+
+
+        //  var Playlist = AV.Object.extend('Playlist');
+        //     var playlist = new Playlist();
+        //     playlist.set('name', '测试标题1');
+        //     playlist.set('summary', '测试简介1');
+        //     playlist.save()
+
+        //     song.set('dependent', playlist)
+
+
+
+            // playlist.save().then((newPlaylist) => {
+            //     console.log(newPlaylist) 
+            // }, 
+            // (error) => {
+            //     console.error(error);
+            // });
+
+    </script>
+
+</body>
+
+</html>
